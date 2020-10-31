@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Server Set Up For EJS</title>
+  <link href="/styles/base.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <form action="/new" method="GET">
+    <fieldset>
+      <legend>Enter your Search</legend>
+      <label>
+        <span>Search by Title or Author</span>
+        <input type="text" name="firstname">
+      </label>
+      <p>Please select:</p>
+      <input type="radio" id="title" name="rbutton" value="title">
+      <label for="title">Title</label><br>
+      <input type="radio" id="author" name="rbutton" value="author">
+      <label for="author">Author</label><br><br>
+      <input type="submit" value="Submit">
+    </fieldset>
+  </form>
+</body>
+
+</html>
