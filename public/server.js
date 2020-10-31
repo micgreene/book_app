@@ -42,5 +42,5 @@ app.post('/contact', (request, response) => {
 });
 
 //start server
-app.listen(PORT, () => console.log(`Now listening on Port: ${PORT}.`);
+app.listen(PORT, () => console.log(`Now listening on Port: ${PORT}.`)
 );
