@@ -1,7 +1,7 @@
 # Book App
 
 **Author**: Michael Greene
-**Version**: 1.0.0 
+**Version**: 1.1.0 
 
 ## Overview
 This app is meant for users to be able to search for books based only on their memory of part of the title or author's name.
@@ -37,9 +37,11 @@ Estimate of time needed to complete: 30 min
 
 Start time: 1:54 pm
 
-Finish time: _____
+Finish time: 1:55pm
 
-Actual time needed to complete: _____
+Actual time needed to complete: 1 hr 1min
+
+10-31-2001 2:56pm - Application now able to render content via index.ejs
 
 Collaborators
 -->Matthew Holder
