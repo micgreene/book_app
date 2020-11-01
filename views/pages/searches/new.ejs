@@ -9,19 +9,19 @@
 </head>
 
 <body>
-  <form action="/new" method="GET">
+  <form action="/searches" method="POST">
     <fieldset>
-      <legend>Enter your Search</legend>
+      <legend>Search by Title or Author</legend>
       <label>
-        <span>Search by Title or Author</span>
-        <input type="text" name="firstname">
+        <input type="text" name="searchTag" placeholder="Enter a Title or Author">
       </label>
-      <p>Please select:</p>
+      <br>
       <input type="radio" id="title" name="rbutton" value="title">
       <label for="title">Title</label><br>
       <input type="radio" id="author" name="rbutton" value="author">
       <label for="author">Author</label><br><br>
-      <input type="submit" value="Submit">
+      
+      <button type="submit">Search the Google Books API</button>
     </fieldset>
   </form>
 </body>

@@ -29,18 +29,31 @@ app.get('/', (request, response) => {
   const first = 'Bob';
   let petArray =['pet1', 'pet2', 'pet3'];
 
-  response.status(200).render('pages/index.ejs', {name: first, pets: petArray});
+  response.status(200).render('pages/searches/new.ejs', {name: first, pets: petArray});
 });
 
 
-app.post('/contact', (request, response) => {
-  const firstName = request.body.firstname;
+app.post('/searches', (request, response) => {
+  let  URL = 'https://www.googleapis.com/books/v1/volumes?q=';
+  
+  let searchParam = request.body.searchTag;
+  let radioButton = `in${request.body.rbutton}:`;
+  let apiKey = `&key=${process.env.GOOGLE_API_KEY}`;  
+  const paramURL = `${radioButton}${searchParam}${apiKey}`;
+  URL = `${URL}${paramURL}`
 
-  const lastName = request.body.lastname;
-
-  response.status(200).send(firstName + ' ' + lastName);
+  response.status(200).send();
 });
 
 //start server
 app.listen(PORT, () => console.log(`Now listening on Port: ${PORT}.`)
 );
+
+
+//Constructors
+function Book(image, title, author, description){
+  this.image = image || 'https://i.imgur.com/J5LVHEL.jpg';
+  this.name = name || 'No Title Returned';
+  this.author = author || 'No Author Returned';
+  this.description = description || 'N/A';
+}
