@@ -43,5 +43,40 @@ Actual time needed to complete: 1 hr 1min
 
 10-31-2001 2:56pm - Application now able to render content via index.ejs
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Number and name of feature: 2. As a user, I want to search the Google Books API so that I can view the results of my search.
+
+Given that the user enters a seach query
+When the user submits the search form
+Then the search query should be included in a request to the Google Books API
+
+Estimate of time needed to complete: 1 hr 
+
+Start time: 2:00 pm
+
+Finish time: 3:45pm
+
+Actual time needed to complete: 1 hr 45min
+
+10-31-2001 3:47pm - Application now able to send information from front end server to back end server via thr POST method from new.ejs
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Number and name of feature: 3. As a user, I want to be able to browse the search results.
+
+Given that the user enters a seach query
+When the user submits the search form
+Then the first ten books should be displayed to the user
+
+Estimate of time needed to complete: 2 hr 
+
+Start time: 4:55 pm
+
+Finish time: :pm
+
+Actual time needed to complete: 1 hr 45min
+
+10-31-2001 3:47pm - Application now able to send information from front end server to back end server via thr POST method from new.ejs
+
 Collaborators
 -->Matthew Holder

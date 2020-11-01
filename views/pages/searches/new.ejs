@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Server Set Up For EJS</title>
+  <link href="/styles/base.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <form action="/searches" method="POST">
+    <fieldset>
+      <legend>Search by Title or Author</legend>
+      <label>
+        <input type="text" name="searchTag" placeholder="Enter a Title or Author">
+      </label>
+      <br>
+      <input type="radio" id="title" name="rbutton" value="title">
+      <label for="title">Title</label><br>
+      <input type="radio" id="author" name="rbutton" value="author">
+      <label for="author">Author</label><br><br>
+      
+      <button type="submit">Search the Google Books API</button>
+    </fieldset>
+  </form>
+</body>
+
+</html>
