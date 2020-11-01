@@ -18,42 +18,65 @@ app.use(cors());
 app.use(express.static('./public'));
 
 //Decode POST data
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 //set default view engine
 app.set('view engine', 'ejs');
 
 
 //create routes
+app.use('*', notFoundHandler);
 app.get('/', (request, response) => {
   const first = 'Bob';
-  let petArray =['pet1', 'pet2', 'pet3'];
+  let petArray = ['pet1', 'pet2', 'pet3'];
 
-  response.status(200).render('pages/searches/new.ejs', {name: first, pets: petArray});
+  response.status(200).render('pages/searches/new.ejs', { name: first, pets: petArray });
 });
-
 
 app.post('/searches', (request, response) => {
-  let  URL = 'https://www.googleapis.com/books/v1/volumes?q=';
-  
-  let searchParam = request.body.searchTag;
-  let radioButton = `in${request.body.rbutton}:`;
-  let apiKey = `&key=${process.env.GOOGLE_API_KEY}`;  
-  const paramURL = `${radioButton}${searchParam}${apiKey}`;
-  URL = `${URL}${paramURL}`
+  try {
+    let URL = 'https://www.googleapis.com/books/v1/volumes?q=';
 
-  response.status(200).send();
+    let searchParam = request.body.searchTag;
+    let radioButton = `in${request.body.rbutton}:`;
+    let apiKey = `&key=${process.env.GOOGLE_API_KEY}`;
+    const paramURL = `${radioButton}${searchParam}${apiKey}`;
+    URL = `${URL}${paramURL}`
+
+    let bookArray = [];
+    superagent.get(URL).then(data => {
+      const parsedData = JSON.parse(data.text).items;
+      bookArray = parsedData.map(element => {
+          const imgURL = element.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg';
+          const title = element.volumeInfo.title;
+          const authors = element.volumeInfo.authors;
+          const descrp = element.volumeInfo.description;
+          let bookItem = new Book(imgURL, title, authors, descrp);
+          return bookItem;        
+      });
+      response.status(200).json(bookArray);
+    });
+  }
+  catch (error) {
+    console.log('ERROR', error);
+    response.status(500).send('So sorry, something went wrong.');
+  }
+
 });
 
+function notFoundHandler(request, response) {
+  response.status(404).send('No such address found. Did you type in the correct route?');
+}
+
 //start server
-app.listen(PORT, () => console.log(`Now listening on Port: ${PORT}.`)
+app.listen(PORT, () => console.log(`Server Now listening on Port: ${PORT}.`)
 );
 
 
 //Constructors
-function Book(image, title, author, description){
+function Book(image, title, author, description) {
   this.image = image || 'https://i.imgur.com/J5LVHEL.jpg';
-  this.name = name || 'No Title Returned';
+  this.name = title || 'No Title Returned';
   this.author = author || 'No Author Returned';
   this.description = description || 'N/A';
 }
