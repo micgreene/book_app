@@ -25,7 +25,7 @@ app.set('view engine', 'ejs');
 
 
 //create routes
-app.use('*', notFoundHandler);
+
 app.get('/', (request, response) => {
   const first = 'Bob';
   let petArray = ['pet1', 'pet2', 'pet3'];
@@ -45,6 +45,7 @@ app.post('/searches', (request, response) => {
 
     let bookArray = [];
     superagent.get(URL).then(data => {
+      console.log('working');
       const parsedData = JSON.parse(data.text).items;
       bookArray = parsedData.map(element => {
           const imgURL = element.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg';
@@ -54,7 +55,8 @@ app.post('/searches', (request, response) => {
           let bookItem = new Book(imgURL, title, authors, descrp);
           return bookItem;        
       });
-      response.status(200).json(bookArray);
+      console.log(bookArray);
+      response.status(200).render('pages/searches/show.ejs', { searchResults: bookArray });
     });
   }
   catch (error) {
@@ -63,7 +65,7 @@ app.post('/searches', (request, response) => {
   }
 
 });
-
+app.use('*', notFoundHandler);
 function notFoundHandler(request, response) {
   response.status(404).send('No such address found. Did you type in the correct route?');
 }
