@@ -49,7 +49,7 @@ app.post('/searches', (request, response) => {
       console.log('working');
       const parsedData = JSON.parse(data.text).items;
       bookArray = parsedData.map(element => {
-        const imgURL = element.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg';
+        const imgURL = element.volumeInfo.imageLinks ? element.volumeInfo.imageLinks.thumbnail: 'https://i.imgur.com/J5LVHEL.jpg';
         const title = element.volumeInfo.title;
         const authors = element.volumeInfo.authors;
         const descrp = element.volumeInfo.description;
