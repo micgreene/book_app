@@ -31,7 +31,7 @@ app.set('view engine', 'ejs');
 //create routes
 
 app.get('/', (request, response) => {
-  response.send('Working as Intended!');
+  response.status(200).render('pages/searches/new.ejs');
 });
 
 app.post('/searches', (request, response) => {
