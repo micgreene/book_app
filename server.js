@@ -4,12 +4,16 @@
 const express = require('express');
 const superagent = require('superagent');
 const cors = require('cors');
+const pg = require('pg');
 
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+
+//create client
+const client = new pg.Client(process.env.DATABASE_URL);
 
 //cors
 app.use(cors());
@@ -27,10 +31,7 @@ app.set('view engine', 'ejs');
 //create routes
 
 app.get('/', (request, response) => {
-  const first = 'Bob';
-  let petArray = ['pet1', 'pet2', 'pet3'];
-
-  response.status(200).render('pages/searches/new.ejs', { name: first, pets: petArray });
+  response.send('Working as Intended!');
 });
 
 app.post('/searches', (request, response) => {
@@ -48,12 +49,13 @@ app.post('/searches', (request, response) => {
       console.log('working');
       const parsedData = JSON.parse(data.text).items;
       bookArray = parsedData.map(element => {
-          const imgURL = element.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg';
-          const title = element.volumeInfo.title;
-          const authors = element.volumeInfo.authors;
-          const descrp = element.volumeInfo.description;
-          let bookItem = new Book(imgURL, title, authors, descrp);
-          return bookItem;        
+        const imgURL = element.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg';
+        const title = element.volumeInfo.title;
+        const authors = element.volumeInfo.authors;
+        const descrp = element.volumeInfo.description;
+        let bookItem = new Book(imgURL, title, authors, descrp);
+
+        return bookItem;
       });
       console.log(bookArray);
       response.status(200).render('pages/searches/show.ejs', { searchResults: bookArray });
@@ -67,12 +69,15 @@ app.post('/searches', (request, response) => {
 });
 app.use('*', notFoundHandler);
 function notFoundHandler(request, response) {
-  response.status(404).send('No such address found. Did you type in the correct route?');
+  response.status(404).send('No such address found, my friend. Did you type in the correct route?');
 }
 
 //start server
-app.listen(PORT, () => console.log(`Server Now listening on Port: ${PORT}.`)
-);
+client.connect().then( () => {
+  app.listen(PORT, () => console.log(`App is Now listening on Port: ${PORT}.`));
+}).catch(err => {
+  console.log('ERROR', err);
+});
 
 
 //Constructors
