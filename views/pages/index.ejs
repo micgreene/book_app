@@ -7,13 +7,14 @@
     <link href="/styles/base.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <a href="/newSearch">New Book Search</a>
+    <h2> "Total Books in Database: <%= results.length %>"</h2>
     <% results.forEach( book => { %>      
       <img src= <%= book.image_url  %>>
       <h3><%= book.title %></h3>
       <p> <%= book.author %></p>
       <p> <%= book.descr %></p> 
-      <p> <%= book.isbn %></p>
-      <p> "total books in database: <%= results.length %>"</p>
+      <p> <%= book.isbn %></p>      
       <a href="/books/<%= book.id %>">Details</a> 
     <% }) %>
   </body>
