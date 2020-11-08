@@ -31,7 +31,14 @@ app.set('view engine', 'ejs');
 //create routes
 
 app.get('/', (request, response) => {
-  response.status(200).render('pages/searches/new.ejs');
+  let SQL = 'SELECT * from books;';
+
+  return client.query(SQL)
+    .then(results => response.render('pages/index', { results: results.rows }))
+    .catch(notFoundHandler);
+
+  response.status(200).render('pages/searches/show.ejs', { searchResults: bookArray });
+  //response.status(200).render('pages/searches/new.ejs');
 });
 
 app.post('/searches', (request, response) => {
@@ -57,7 +64,6 @@ app.post('/searches', (request, response) => {
 
         return bookItem;
       });
-      console.log(bookArray);
       response.status(200).render('pages/searches/show.ejs', { searchResults: bookArray });
     });
   }
@@ -68,6 +74,7 @@ app.post('/searches', (request, response) => {
 
 });
 app.use('*', notFoundHandler);
+
 function notFoundHandler(request, response) {
   response.status(404).send('No such address found, my friend. Did you type in the correct route?');
 }
