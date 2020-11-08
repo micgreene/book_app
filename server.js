@@ -32,13 +32,19 @@ app.set('view engine', 'ejs');
 
 app.get('/', (request, response) => {
   let SQL = 'SELECT * from books;';
-
   return client.query(SQL)
     .then(results => response.render('pages/index', { results: results.rows }))
     .catch(notFoundHandler);
+});
 
-  response.status(200).render('pages/searches/show.ejs', { searchResults: bookArray });
-  //response.status(200).render('pages/searches/new.ejs');
+app.get('/books/:id', (request, response) => {
+  let SQL = `SELECT * from books WHERE id = ${request.params.id};`;
+  client.query(SQL)
+    .then(results => response.render('pages/books/details', { 'results': [results.rows[0]] }))
+    .catch(error => {
+      console.log('ERROR', error);
+      response.status(500).send('So sorry, something went wrong.');
+    })
 });
 
 app.post('/searches', (request, response) => {

@@ -7,11 +7,14 @@
     <link href="/styles/base.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <% results.forEach( book => { %>
-      <h2><%= book.name %></h2>
-      <img src= <%= book.image  %>>
-      <h3> <%= book.author %></h3>
-      <p> <%= book.description %></p> 
+    <% results.forEach( book => { %>      
+      <img src= <%= book.image_url  %>>
+      <h3><%= book.title %></h3>
+      <p> <%= book.author %></p>
+      <p> <%= book.descr %></p> 
+      <p> <%= book.isbn %></p>
+      <p> "total books in database: <%= results.length %>"</p>
+      <a href="/books/<%= book.id %>">Details</a> 
     <% }) %>
   </body>
 </html>
