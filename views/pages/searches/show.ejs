@@ -1,17 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Server Set Up For EJS</title>
-    <link href="/styles/base.css" rel="stylesheet" type="text/css" />
-  </head>
-  <body>
-    <% searchResults.forEach( book => { %>
-      <h2><%= book.name %></h2>
-      <img src= <%= book.image  %>>
-      <h3> <%= book.author %></h3>
-      <p> <%= book.description %></p> 
-    <% }) %>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Search Results</title>
+  <link href="/styles/base.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <% searchResults.forEach( book => { %>
+  <img src=<%= book.image  %>>
+  <h3><%= book.name %></h3>  
+  <p> <%= book.author %></p>
+  <p> <%= book.description %></p>
+  <p> isbn#:<%= book.isbn %></p>
+  <form action="/books?_method=PUT" method="POST">
+    <input type="hidden" name="image" value="<%= book.image %>">
+    <input type="hidden" name="image" value="<%= book.image %>">
+    <input type="hidden" name="title" value="<%= book.name %>">
+    <input type="hidden" name="author" value="<%= book.author %>">
+    <input type="hidden" name="description" value="<%= book.description %>">
+    <input type="hidden" name="isbn" value="<%= book.isbn %>">
+    <button type="submit">Add This Book to My Collection</button>
+  </form>
+  <br>
+  <br>
+  <% }) %>
+
+
+
+</body>
+
 </html>
