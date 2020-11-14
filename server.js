@@ -32,52 +32,59 @@ app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
 
 //create routes
+app.get('/', homeRouteHandler);
+app.get('/books/:id', collectionDetailsHandler);
+app.post('/books', addBookToCollection);
+app.get('/newSearch', startNewSearch);
+app.post('/searches', searchHandler);
+app.use('*', notFoundHandler);
 
-app.get('/', (request, response) => {
-  let SQL = 'SELECT * from books;';
-  return client.query(SQL)
-    .then(results => response.render('pages/index', { results: results.rows }))
-    .catch(err => {
-      console.log('ERROR', err);
-    });
-});
-
-app.get('/books/:id', (request, response) => {
-  let SQL = `SELECT * from books WHERE id = ${request.params.id};`;
-  client.query(SQL)
-    .then(results => response.render('pages/books/details', { 'results': [results.rows[0]] }))
-    .catch(err => {
-      console.log('ERROR', err);
-    });
-});
-
-app.put('/books', addBookToCollection);
-
-function addBookToCollection(request, response) {
+// function handlers
+function homeRouteHandler(request, response) {
   try {
-    let SQL = 'INSERT INTO books (author, title, isbn, image_url, descr) VALUES ($1, $2, $3, $4, $5);';
-    const params = [request.body.author, request.body.name, request.body.isbn, request.body.image, request.body.description];
-    client.query(SQL, params);
+    let SQL = 'SELECT * from books;';
+    return client.query(SQL)
+      .then(results => response.render('pages/index', { results: results.rows }));
   }
   catch (error) {
-    console.log('ERROR', error);
-    response.status(500).send('So sorry, something went wrong.');
+    errorHandler(error, response);
   }
 }
 
-app.get('/newSearch', startNewSearch);
+function collectionDetailsHandler(request, response) {
+  try {
+    let SQL = `SELECT * from books WHERE id = ${request.params.id};`;
+    client.query(SQL)
+      .then(results => response.render('pages/books/details', { 'results': [results.rows[0]] }))
+  }
+  catch (error) {
+    errorHandler(error, response);
+  }
+}
+
+function addBookToCollection(request, response) {
+  try {
+    let SQL = 'INSERT INTO books (author, title, isbn, image_url, descr) VALUES ($1, $2, $3, $4, $5) returning *;';
+    const sqlParams = [request.body.author, request.body.title, request.body.isbn, request.body.image, request.body.description];
+    client.query(SQL, sqlParams).then(results => {
+      response.status(200).redirect(`books/${results.rows[0].id}`);
+    })
+  }
+  catch (error) {
+    errorHandler(error, response);
+  }
+}
 
 function startNewSearch(request, response) {
   try {
     response.render('pages/searches/new');
   }
   catch (error) {
-    console.log('ERROR', error);
-    response.status(500).send('So sorry, something went wrong.');
+    errorHandler(error, response);
   }
-}
+} 
 
-app.post('/searches', (request, response) => {
+function searchHandler(request, response){
   try {
     let URL = 'https://www.googleapis.com/books/v1/volumes?q=';
 
@@ -105,15 +112,25 @@ app.post('/searches', (request, response) => {
     });
   }
   catch (error) {
-    console.log('ERROR', error);
-    response.status(500).send('So sorry, something went wrong.');
+    errorHandler(error, response);
   }
+}
 
-});
-app.use('*', notFoundHandler);
+function deleteHandler(request, response) {
+
+}
+
+function editHander() {
+
+}
 
 function notFoundHandler(request, response) {
   response.status(404).send('No such address found, my friend. Did you type in the correct route?');
+}
+
+function errorHandler(error, response) {
+  console.log('ERROR', error);
+  response.status(500).send('So sorry, something went wrong.');
 }
 
 //start server

@@ -1,8 +1,19 @@
-<section>   
-    <img src= <%= results[0].image_url  %>>
-    <h3><%= results[0].title %></h3>
-    <p> <%= results[0].author %></p>
-    <p> <%= results[0].descr %></p> 
-    <p> <%= results[0].isbn %></p>
-    <a href="/">Return to Collection</a> 
-</section>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../../layout/head') %>
+</head>
+
+<body>
+    <section id="detailPage">
+        <img src=<%= results[0].image_url  %>>
+        <h3><%= results[0].title %></h3>
+        <p> <%= results[0].author %></p>
+        <p> <%= results[0].descr %></p>
+        <p> <%= results[0].isbn %></p>
+        <a href="/">Return to Collection</a>
+    </section>
+</body>
+
+</html>
